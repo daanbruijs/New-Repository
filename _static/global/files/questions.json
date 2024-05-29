@@ -34,6 +34,14 @@
         "labels": ["Yes","No","Not sure / don't remember"]
     },
     {
+        "question": "What attribute did you focus on most?",
+        "name": "focus_attr",
+        "type": "radio",
+        "direction": "horizontal wrap",
+        "values": [1,2,3],
+        "labels": ["Price","Quality","Sustainability"]
+    },
+    {
         "question": "Where would you put yourself in the socioeconomic ladder?",
         "name": "SNE",
         "type": "Likert",
@@ -47,6 +55,14 @@
         "type": "Likert",
         "likertMax": 10,
         "limits": ["Liberal (left)","Conservative (right)"],
+        "confirmRequired" : true
+    }, 
+    {
+        "question": "How much do environmental issues concern you in your everyday life?",
+        "name": "environment",
+        "type": "Likert",
+        "likertMax": 10,
+        "limits": ["Not concerned at all","Extremely concerned"],
         "confirmRequired" : true
     },    
     {

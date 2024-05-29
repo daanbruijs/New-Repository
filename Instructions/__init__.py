@@ -15,20 +15,39 @@ class C(BaseConstants):
     NUM_ROUNDS          = 1
     # Setup/Experiment variables 
     iPracticeRounds     = 3
-    iOptions            = 21
+    iOptions            = 21 #27 options? = trial
     # iNumTrials          = 5
     iNumTrials          = iPracticeRounds + 3*iOptions
     # Template variables
     AvgDur              = '30'
-    iBonus              = '2 pounds'
-    # Figs/Files paths
-    figUvA_logo         = 'global/figures/UvA_logo.png'
+    iBonus              = '1.5 euros'
+    ## Symbols directory
+    UvA_logo         = 'global/figures/UvA_logo.png'
     path1               = 'global/figures/example1.png'
     path2               = 'global/figures/example2.png'
     pathGif             = 'global/figures/demoMouseCrop.gif'
     pathData            = '_static/global/files/Data4Exp.csv'
     imgCandidate        = "global/figures/candidate.png"
     imgNumbers          = "global/figures/numbers/n_"
+    imgStars          = "global/figures/stars/star_"
+    imgLeafs        ="global/figures/leafs/leaf_"
+    imgNegatives    ="global/figures/negatives/neg-eco-"
+    OneTreePlanted      = "global/figures/Logo_OneTreePlanted.png"
+    star_symbol                = "global/figures/one_star.png"
+    leaf_symbol                = "global/figures/one_leaf.png"
+    neg_symbol             = "global/figures/one-neg.png"
+    revealed_pos       = "global/figures/revealed_task_pos.png"
+    revealed_neg        = "global/figures/revealed_task_neg.png"
+    circled_task_pos        = "global/figures/circled_task_pos.png"
+    circled_task_neg        = "global/figures/circled_task_neg.png"
+    TreatPos          = "global/figures/TreatPos.gif"
+    TreatNeg          = "global/figures/TreatNeg.gif"
+    one_leaf            ="global/figures/leafs/leaf_1.png"
+    two_leaf            ="global/figures/leafs/leaf_2.png"
+    three_leaf          ="global/figures/leafs/leaf_3.png"
+    one_neg             ="global/figures/negatives/neg-eco-1.png"
+    two_neg             ="global/figures/negatives/neg-eco-2.png"
+    three_neg           ="global/figures/negatives/neg-eco-3.png"
 
     # Links 
     # You might want to have different links, for when they submit differen answers
@@ -38,7 +57,6 @@ class C(BaseConstants):
     SubmitLink          = 'https://app.prolific.com/submissions/complete?cc=ZZZZZ'
 
 
-
 class Subsession(BaseSubsession):
     pass
 
@@ -46,9 +64,9 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
-
 class Player(BasePlayer):
     pass
+    sTreesLocation = models.StringField()
 
 # FUNCTIONS
     
@@ -61,12 +79,11 @@ def creating_session(subsession):
             p = player.participant
             # When creating the session, you can define whether you have a random treatment or a specific one. 
             if s.config['treatment']=='random':
-                p.sTreatment = random.choice(['Control','Low','High'])
+                p.sTreatment = random.choice(['Positive','Negative'])
             else:
                 p.sTreatment = s.config['treatment']
             # Randomly selected trial
             p.iSelectedTrial = random.randint(C.iPracticeRounds,C.iNumTrials)
-
             ## LOAD HERE YOUR DATABASE 
 
 
@@ -76,7 +93,7 @@ def creating_session(subsession):
 
 class Instructions(Page):
     form_model = 'player'
-    form_fields = []
+    form_fields = ['sTreesLocation']
 
     @staticmethod
     def js_vars(player: Player):
@@ -84,18 +101,18 @@ class Instructions(Page):
         p = player.participant
         return dict(
             lSolutions = [
-                'a','b', 'a', str(C.iNumTrials) # Solutions to control questions
+                'a','c', 'a', str(C.iPracticeRounds) # Solutions to control questions
             ]
         )
     
     @staticmethod
     def vars_for_template(player: Player):
-        # Variables for HTML
         p = player.participant
-        return dict(
-            Treatment = p.sTreatment
+        return dict(  
+            pos_treatment =  p.sTreatment=="Positive" 
+
         )
-    
+
 
 page_sequence = [Instructions]
 

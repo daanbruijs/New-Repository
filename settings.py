@@ -5,6 +5,7 @@ SESSION_CONFIGS = [
         name='task',
         app_sequence=['Task'],
         num_demo_participants=1,
+        treatment = 'random',
     ),
     dict(
         name='Questionnaire',

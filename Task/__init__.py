@@ -12,12 +12,12 @@ class C(BaseConstants):
     NAME_IN_URL = 'Task'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 10
-    NUM_PROUNDS = 1
+    NUM_PROUNDS = 3
     # List of attributes (id)
-    lAttrID     = ['p','q','s','t']
-    lAttrNames  = ['Price','Quality','Sustainability','Tax']
+    lAttrID     = ['p','s','q']
+    lAttrNames  = ['Price','Sustainability','Quality']
     # Template vars
-    lColNames   = ['A','B','C','D']
+    lColNames   = ['Product 1','Product 2']
 
 
     # In between round messages
@@ -25,9 +25,13 @@ class C(BaseConstants):
         "1": f"Now you will have {NUM_PROUNDS} practice rounds.", 
         str(int(NUM_PROUNDS+1)): "The practice rounds are over."
         }
+    
     # Image 
     imgCandidate    = "global/figures/candidate.png"
     imgNumbers      = "global/figures/numbers/n_"
+    imgStars        = "global/figures/stars/star_"
+    imgLeafs        ="global/figures/leafs/leaf_"
+    imgNegatives    ="global/figures/negatives/neg-eco-"
     # Confidence page
     iLikertConf     = 7
     sConfQuestion   = f"From 1 to {iLikertConf}, how confident are you on your choice?"
@@ -51,6 +55,15 @@ class Player(BasePlayer):
     dRT_dec     = models.FloatField()
     iConfidence = models.IntegerField()
     dRT_conf    = models.FloatField()
+
+    # 
+    P1=models.IntegerField()
+    P2=models.IntegerField()
+    S1=models.IntegerField()
+    S2=models.IntegerField()
+    Q1=models.IntegerField()
+    Q2=models.IntegerField()
+
 
     # Attention variables
     sNames      = models.LongStringField(blank=True)
@@ -80,25 +93,53 @@ class Player(BasePlayer):
 def creating_session(subsession):
     # Load Session variables
     s = subsession.session 
-    if subsession.round_number==1:
+    if subsession.round_number==1: 
         for player in subsession.get_players():
             p = player.participant
+
             #### Randomize order of attributes
             lPos = C.lAttrID[:]         # Create hard copy of attributes
             random.shuffle(lPos)        # Shuffle order
             p.lPos = lPos               # Store it as a participant variable
             #### Select trial for payment (from the first round after practice rounds to the last)
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
+           
+           
+            if s.config['treatment']=='random':
+                p.sTreatment = random.choice(['Positive','Negative'])
+                print(f"Treatment assigned randomly: {p.sTreatment}")  # Print the randomly assigned treatment
+            else:
+                p.sTreatment = s.config['treatment']
+                print(f"Treatment assigned from config: {p.sTreatment}")  # Print the treatment from config
+
 
     for player in subsession.get_players():
         p = player.participant
         player.sBetweenBtn = random.choice(['left','right'])
+        if player.round_number <= C.NUM_PROUNDS:
+            # Practice Trials
+            print(player.round_number, "practice")  
+            if player.round_number == 1:
+                lValues = [1,1, 1,1, 1,3]
+            elif player.round_number == 2:
+                lValues = [1,1, 1,3, 1,1] 
+            elif player.round_number == 3:
+                lValues = [3,1, 1,1, 1,1]
+    
+        else:
+            # Normal Trials
+            print(player.round_number, "normal")
+            lValues = [1,1, 1,1, 1,3] # lValues= p.database[int(player.round_number-4)]
+            print(lValues)
+        player.P1,player.P2, player.S1,player.S2,player.Q1,player.Q2 = lValues
 
+        
+        #,player.S1,player.S2,player.P2,player.P2
 
-def attributeList(lValues,lPos):
-
+def attributeList(lValues,lPos,treatment): # treatment
     lAttributes = []
-    lOrder      = []
+    lOrder = []
+
     for i in range(len(C.lAttrID)):
         id                  = C.lAttrID[i]      
         name                = C.lAttrNames[i]  
@@ -106,7 +147,16 @@ def attributeList(lValues,lPos):
         lOrder.append(lPos.index(id))
         lPaths = []
         for v in lValues[i]:
-            lPaths.append(f"{C.imgNumbers}{v}.png")
+            if id=="q":
+                 lPaths.append(f"{C.imgStars}{v}.png")
+            elif id=="s" and treatment == "Positive":
+                lPaths.append(f"{C.imgLeafs}{v}.png")
+            elif id=="s" and treatment == "Negative":
+                lPaths.append(f"{C.imgNegatives}{v}.png")
+            else:
+                lPaths.append(f"{C.imgNumbers}{v}.png")
+
+
         # Create object with all the relevant variables
         Attr = {
             'id'        : id,
@@ -129,11 +179,15 @@ class Decision(Page):
     def vars_for_template(player: Player):
         # Order of attributes (from participant var)
         p = player.participant
-        lPos = p.lPos      
+        lPos = p.lPos
+        treatment=p.sTreatment   
+
         # Candidates values          
-        lValues = [rnd.randint(0,6,len(C.lColNames)) for _ in range(len(C.lAttrID))]
+      
+        lValues = [[player.P1,player.P2],[player.S1,player.S2],[player.Q1,player.Q2]]
+        print(lValues)
         return dict(
-            lAttr = attributeList(lValues,lPos),
+            lAttr = attributeList(lValues,lPos,treatment), #treatment
         )
     
     @staticmethod
@@ -141,7 +195,7 @@ class Decision(Page):
         p = player.participant
         
         if player.round_number == p.iSelectedTrial: 
-            p.bChoseA = player.iChooseB==0   
+            p.bChoseA = player.iChooseB == 0   
             print(f"Decision in selected trial recorded: {p.bChoseA}")
 
 
@@ -179,3 +233,5 @@ class Confidence(Page):
 
 
 page_sequence = [SideButton, Decision, Confidence]
+
+ 

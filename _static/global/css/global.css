@@ -109,8 +109,13 @@
 }
 
 .img-instructions {
-    width: 35vw;
-    height: auto;
+    width: auto;
+    height: 40vw;
+}
+
+.gif-instructions {
+    width: auto;
+    height: 25vw
 }
 
 .hint{
@@ -187,3 +192,15 @@
   div[class$='bold']:hover   .tooltiptext {
     visibility: visible;
   }
+
+  .task-img {
+    width: 17vw;
+    border: 1px solid #333;
+    object-fit: contain;
+}
+
+.slide2-description {
+    font-size: 0.8em;
+    text-align: center;
+    font-weight: bold;
+}
