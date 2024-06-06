@@ -15,9 +15,9 @@ class C(BaseConstants):
     NUM_ROUNDS          = 1
     # Setup/Experiment variables 
     iPracticeRounds     = 3
-    iOptions            = 21 #27 options? = trial
+    iOptions            = 54 # 3 x 6 x 4
     # iNumTrials          = 5
-    iNumTrials          = iPracticeRounds + 3*iOptions
+    iNumTrials          = iPracticeRounds + iOptions
     # Template variables
     AvgDur              = '30'
     iBonus              = '1.5 euros'
@@ -115,4 +115,3 @@ class Instructions(Page):
 
 
 page_sequence = [Instructions]
-

@@ -11,7 +11,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'Task'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 54
     NUM_PROUNDS = 3
     # List of attributes (id)
     lAttrID     = ['p','s','q']
@@ -93,6 +93,11 @@ class Player(BasePlayer):
 def creating_session(subsession):
     # Load Session variables
     s = subsession.session 
+
+    # Read CSV file
+    csv_path = "_static/global/table/filtered_trials_shuffled.csv"
+    trial_data = pd.read_csv(csv_path)
+
     if subsession.round_number==1: 
         for player in subsession.get_players():
             p = player.participant
@@ -104,33 +109,36 @@ def creating_session(subsession):
             #### Select trial for payment (from the first round after practice rounds to the last)
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
            
-           
+           # This is not necessary! You can just call upon it once
             if s.config['treatment']=='random':
-                p.sTreatment = random.choice(['Positive','Negative'])
-                print(f"Treatment assigned randomly: {p.sTreatment}")  # Print the randomly assigned treatment
+                 p.sTreatment = random.choice(['Positive','Negative'])
+                 print(f"Treatment assigned randomly: {p.sTreatment}")  # Print the randomly assigned treatment
             else:
-                p.sTreatment = s.config['treatment']
-                print(f"Treatment assigned from config: {p.sTreatment}")  # Print the treatment from config
-
+                 p.sTreatment = s.config['treatment']
+                 print(f"Treatment assigned from config: {p.sTreatment}")  # Print the treatment from config
+            #p.sTreatment = s.config['treatment']
+            #print(f"Treatment assigned from config: {p.sTreatment}")
 
     for player in subsession.get_players():
         p = player.participant
         player.sBetweenBtn = random.choice(['left','right'])
-        if player.round_number <= C.NUM_PROUNDS:
+      
             # Practice Trials
+        if player.round_number <= C.NUM_PROUNDS:
             print(player.round_number, "practice")  
             if player.round_number == 1:
-                lValues = [1,1, 1,1, 1,3]
+                lValues = [1.0,1.0, 1,1, 1,3]
             elif player.round_number == 2:
-                lValues = [1,1, 1,3, 1,1] 
+                lValues = [1.0,1.0, 1,3, 1,1] 
             elif player.round_number == 3:
-                lValues = [3,1, 1,1, 1,1]
-    
-        else:
+                lValues = [3.0,1.0, 1,1, 1,1]
+              
             # Normal Trials
-            print(player.round_number, "normal")
-            lValues = [1,1, 1,1, 1,3] # lValues= p.database[int(player.round_number-4)]
-            print(lValues)
+        else:
+            # print(player.round_number, "normal")
+            trial_index=player.round_number - C.NUM_PROUNDS-1
+            lValues = trial_data.iloc[trial_index].tolist() # lValues= p.database[int(player.round_number-4)]
+            #print(lValues)
         player.P1,player.P2, player.S1,player.S2,player.Q1,player.Q2 = lValues
 
         
@@ -170,10 +178,20 @@ def attributeList(lValues,lPos,treatment): # treatment
 
 # PAGES
 
+# class PracticeInfo1(Page):
+#     @staticmethod
+#     def is_displayed(player):
+#         return player.round_number == 1
+
+# class PracticeInfo2(Page):
+#     @staticmethod
+#     def is_displayed(player):
+#         return player.round_number == C.num_prounds
+
 class Decision(Page):
     form_model      = 'player'
-    form_fields     = [ 'sChoice']
-    # form_fields     = [ 'sStartDec','sEndDec', 'dRT_dec', 'sNames', 'sDT' , 'dTime2first', 'sChoice']
+    #form_fields     = [ 'sChoice']
+    form_fields     = [ 'sStartDec','sEndDec', 'dRT_dec', 'sNames', 'sDT' , 'sChoice'] #'dTime2first',
     
     @staticmethod
     def vars_for_template(player: Player):
