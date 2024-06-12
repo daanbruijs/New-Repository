@@ -57,8 +57,8 @@ class Player(BasePlayer):
     dRT_conf    = models.FloatField()
 
     # 
-    P1=models.IntegerField()
-    P2=models.IntegerField()
+    P1=models.FloatField()
+    P2=models.FloatField()
     S1=models.IntegerField()
     S2=models.IntegerField()
     Q1=models.IntegerField()
@@ -110,12 +110,12 @@ def creating_session(subsession):
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
            
            # This is not necessary! You can just call upon it once
-            if s.config['treatment']=='random':
-                 p.sTreatment = random.choice(['Positive','Negative'])
-                 print(f"Treatment assigned randomly: {p.sTreatment}")  # Print the randomly assigned treatment
-            else:
-                 p.sTreatment = s.config['treatment']
-                 print(f"Treatment assigned from config: {p.sTreatment}")  # Print the treatment from config
+            # if s.config['treatment']=='random':
+            #      p.sTreatment = random.choice(['Positive','Negative'])
+            #      print(f"Treatment assigned randomly: {p.sTreatment}") 
+            # else:
+            #      p.sTreatment = s.config['treatment']
+            #      print(f"Treatment assigned from config: {p.sTreatment}")  
             #p.sTreatment = s.config['treatment']
             #print(f"Treatment assigned from config: {p.sTreatment}")
 
@@ -139,7 +139,8 @@ def creating_session(subsession):
             trial_index=player.round_number - C.NUM_PROUNDS-1
             lValues = trial_data.iloc[trial_index].tolist() # lValues= p.database[int(player.round_number-4)]
             #print(lValues)
-        player.P1,player.P2, player.S1,player.S2,player.Q1,player.Q2 = lValues
+        P1,P2,S1,S2,Q1,Q2 = lValues
+        player.P1,player.P2, player.S1,player.S2,player.Q1,player.Q2 = P1,P2,int(S1),int(S2),int(Q1),int(Q2)
 
         
         #,player.S1,player.S2,player.P2,player.P2
@@ -178,15 +179,18 @@ def attributeList(lValues,lPos,treatment): # treatment
 
 # PAGES
 
-# class PracticeInfo1(Page):
-#     @staticmethod
-#     def is_displayed(player):
-#         return player.round_number == 1
+class Message(Page):
+    template_name = 'global/Message.html'
 
-# class PracticeInfo2(Page):
-#     @staticmethod
-#     def is_displayed(player):
-#         return player.round_number == C.num_prounds
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_PROUNDS
+    
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            MessageText = 'The practice rounds ended. <br> The experiment will start now.'
+        )
 
 class Decision(Page):
     form_model      = 'player'
@@ -250,6 +254,6 @@ class Confidence(Page):
 
 
 
-page_sequence = [SideButton, Decision, Confidence]
+page_sequence = [SideButton, Decision, Confidence, Message]
 
  
