@@ -21,34 +21,43 @@ class C(BaseConstants):
     # Template variables
     AvgDur              = '30'
     iBonus              = '1.5'
+
     ## Symbols directory
-    UvA_logo         = 'global/figures/UvA_logo.png'
-    path1               = 'global/figures/example1.png'
-    path2               = 'global/figures/example2.png'
-    pathGif             = 'global/figures/demoMouseCrop.gif'
+    # Base
+    UvA_logo            = 'global/figures/UvA_logo.png'
+    path1               = 'global/figures/Not_mine/example1.png'
+    path2               = 'global/figures/Not_mine/example2.png'
+    pathGif             = 'global/figures/Not_mine/demoMouseCrop.gif'
     pathData            = '_static/global/files/Data4Exp.csv'
-    imgCandidate        = "global/figures/candidate.png"
-    imgNumbers          = "global/figures/numbers/n_"
-    imgStars          = "global/figures/stars/star_"
+
+    # Folders
+    imgNumbers      = "global/figures/numbers/n_"
+    imgStars        = "global/figures/stars/star_"
     imgLeafs        ="global/figures/leafs/leaf_"
     imgNegatives    ="global/figures/negatives/neg-eco-"
+
+    # Instructions
     OneTreePlanted      = "global/figures/Logo_OneTreePlanted.png"
-    star_symbol                = "global/figures/one_star.png"
-    leaf_symbol                = "global/figures/one_leaf.png"
-    neg_symbol             = "global/figures/one-neg.png"
-    revealed_pos       = "global/figures/revealed_task_pos.png"
+    star_symbol         = "global/figures/one_star.png"
+    leaf_symbol         = "global/figures/one_leaf.png"
+    neg_symbol          = "global/figures/one-neg.png"
+    revealed_pos        = "global/figures/revealed_task_pos.png"
     revealed_neg        = "global/figures/revealed_task_neg.png"
-    circled_task_pos        = "global/figures/circled_task_pos.png"
-    circled_task_neg        = "global/figures/circled_task_neg.png"
+    circled_task_pos    = "global/figures/circled_task_pos.png"
+    circled_task_neg    = "global/figures/circled_task_neg.png"
+
+    # Gifs
     TreatPos          = "global/figures/TreatPos.gif"
     TreatNeg          = "global/figures/TreatNeg.gif"
+
+    # Multiple leaf/neg/stars
     one_leaf            ="global/figures/leafs/leaf_1.png"
     two_leaf            ="global/figures/leafs/leaf_2.png"
     three_leaf          ="global/figures/leafs/leaf_3.png"
     one_neg             ="global/figures/negatives/neg-eco-1.png"
     two_neg             ="global/figures/negatives/neg-eco-2.png"
     three_neg           ="global/figures/negatives/neg-eco-3.png"
-    three_star  = "global/figures/stars/star_3.png"
+    three_star          = "global/figures/stars/star_3.png"
 
     # Links 
     # You might want to have different links, for when they submit differen answers

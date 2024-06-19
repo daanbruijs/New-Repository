@@ -64,6 +64,7 @@
     left: 50vw;
     transform: translate(-50%,-50%);
     position: absolute;
+    visibility: hidden;
 }
 
 .dec-btn, .between-btn {
