@@ -103,7 +103,7 @@ def creating_session(subsession):
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
             
             # Shuffle order of trials for each participant
-            shuffled_data = trial_data.sample(frac=1).reset_index(drop=True)
+            shuffled_data = trial_data.sample(frac=1).reset_index(drop=True) # or I can upload the file without the top row? "P1,P2,S1,S2,Q1,Q2"
             p.trial_data = shuffled_data
 
     for player in subsession.get_players():
