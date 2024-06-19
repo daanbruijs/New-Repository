@@ -12,7 +12,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP   = None
     NUM_ROUNDS          = 1
     # TimeOut Seconds 
-    timeout_seconds = 0 # Amount of seconds before timeout. If 0, no timeout
+    timeout_seconds = 300 # Amount of seconds before timeout. If 0, no timeout
     # Template variables
     AvgDur              = '30'
     # Figures paths

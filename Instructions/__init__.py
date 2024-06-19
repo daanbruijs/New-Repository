@@ -20,7 +20,7 @@ class C(BaseConstants):
     iNumTrials          = iPracticeRounds + iOptions
     # Template variables
     AvgDur              = '30'
-    iBonus              = '1.5 euros'
+    iBonus              = '1.5'
     ## Symbols directory
     UvA_logo         = 'global/figures/UvA_logo.png'
     path1               = 'global/figures/example1.png'
@@ -48,6 +48,7 @@ class C(BaseConstants):
     one_neg             ="global/figures/negatives/neg-eco-1.png"
     two_neg             ="global/figures/negatives/neg-eco-2.png"
     three_neg           ="global/figures/negatives/neg-eco-3.png"
+    three_star  = "global/figures/stars/star_3.png"
 
     # Links 
     # You might want to have different links, for when they submit differen answers

@@ -34,14 +34,6 @@
         "labels": ["Yes","No","Not sure / don't remember"]
     },
     {
-        "question": "What attribute did you focus on most?",
-        "name": "focus_attr",
-        "type": "radio",
-        "direction": "horizontal wrap",
-        "values": [1,2,3],
-        "labels": ["Price","Quality","Sustainability"]
-    },
-    {
         "question": "Where would you put yourself in the socioeconomic ladder?",
         "name": "SNE",
         "type": "Likert",
@@ -58,13 +50,29 @@
         "confirmRequired" : true
     }, 
     {
+        "question": "What attribute did you focus on most?",
+        "name": "focus_attr",
+        "type": "radio",
+        "direction": "horizontal wrap",
+        "values": [1,2,3],
+        "labels": ["Price","Quality","Sustainability"]
+    },
+    {
         "question": "How much do environmental issues concern you in your everyday life?",
         "name": "environment",
         "type": "Likert",
         "likertMax": 10,
         "limits": ["Not concerned at all","Extremely concerned"],
         "confirmRequired" : true
-    },    
+    },   
+    {
+        "question": "How do you see yourself: are you generally a person who is prepared to behave sustainably, even when this is inconvenient or costly to you?",
+        "name": "sustainable_behavior",
+        "type": "Likert",
+        "likertMax": 10,
+        "limits": ["Not prepared at all","Extremely prepared"],
+        "confirmRequired" : true
+    },   
     {
         "question": "What do you think is the purpose of this study? Describe shortly in your own words.",
         "name": "purpose",

@@ -13,9 +13,11 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 54
     NUM_PROUNDS = 3
+
     # List of attributes (id)
     lAttrID     = ['p','s','q']
     lAttrNames  = ['Price','Sustainability','Quality']
+    
     # Template vars
     lColNames   = ['Product 1','Product 2']
 
@@ -26,20 +28,18 @@ class C(BaseConstants):
         str(int(NUM_PROUNDS+1)): "The practice rounds are over."
         }
     
-    # Image 
+    # Image paths 
     imgCandidate    = "global/figures/candidate.png"
     imgNumbers      = "global/figures/numbers/n_"
     imgStars        = "global/figures/stars/star_"
     imgLeafs        ="global/figures/leafs/leaf_"
     imgNegatives    ="global/figures/negatives/neg-eco-"
+    
     # Confidence page
     iLikertConf     = 7
     sConfQuestion   = f"From 1 to {iLikertConf}, how confident are you on your choice?"
     sLeftConf       = "Very unsure"
     sRightConf      = "Very sure"
-
-
-
 
 class Subsession(BaseSubsession):
     pass
@@ -56,7 +56,7 @@ class Player(BasePlayer):
     iConfidence = models.IntegerField()
     dRT_conf    = models.FloatField()
 
-    # 
+    # Attribute values
     P1=models.FloatField()
     P2=models.FloatField()
     S1=models.IntegerField()
@@ -69,7 +69,7 @@ class Player(BasePlayer):
     sNames      = models.LongStringField(blank=True)
     sDT         = models.LongStringField(blank=True)
 
-    # # Timestamps
+    # Timestamps
     sStartDec   = models.StringField()
     sEndDec     = models.StringField()
     sStartCross = models.StringField()
@@ -81,51 +81,39 @@ class Player(BasePlayer):
     # Others 
     sBetweenBtn = models.StringField()
 
-
-    # # Candidates
-    # sCandA      = models.StringField()
-    # sCandB      = models.StringField()
-    # sStartConf  = models.StringField()
-    # sEndConf    = models.StringField()
-    # # Other
-
     
 def creating_session(subsession):
     # Load Session variables
     s = subsession.session 
 
     # Read CSV file
-    csv_path = "_static/global/table/filtered_trials_shuffled.csv"
+    csv_path = "_static/global/table/filtered_trials_modified.csv" #filtered_trials_shuffled
     trial_data = pd.read_csv(csv_path)
 
     if subsession.round_number==1: 
         for player in subsession.get_players():
             p = player.participant
 
-            #### Randomize order of attributes
+            # Randomize order of attributes
             lPos = C.lAttrID[:]         # Create hard copy of attributes
             random.shuffle(lPos)        # Shuffle order
             p.lPos = lPos               # Store it as a participant variable
-            #### Select trial for payment (from the first round after practice rounds to the last)
+            
+            # Select trial for payment (from the first round after practice rounds to the last)
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
-           
-           # This is not necessary! You can just call upon it once
-            # if s.config['treatment']=='random':
-            #      p.sTreatment = random.choice(['Positive','Negative'])
-            #      print(f"Treatment assigned randomly: {p.sTreatment}") 
-            # else:
-            #      p.sTreatment = s.config['treatment']
-            #      print(f"Treatment assigned from config: {p.sTreatment}")  
-            #p.sTreatment = s.config['treatment']
-            #print(f"Treatment assigned from config: {p.sTreatment}")
+            
+            # Shuffle order of trials for each participant
+            shuffled_data = trial_data.sample(frac=1).reset_index(drop=True)
+            p.trial_data = shuffled_data
 
     for player in subsession.get_players():
         p = player.participant
         player.sBetweenBtn = random.choice(['left','right'])
       
-            # Practice Trials
+         # Practice Trials
         if player.round_number <= C.NUM_PROUNDS:
-            print(player.round_number, "practice")  
+            
+            # print(player.round_number, "practice")  
             if player.round_number == 1:
                 lValues = [1.0,1.0, 1,1, 1,3]
             elif player.round_number == 2:
@@ -133,25 +121,25 @@ def creating_session(subsession):
             elif player.round_number == 3:
                 lValues = [3.0,1.0, 1,1, 1,1]
               
-            # Normal Trials
+         # Normal Trials
         else:
+            
             # print(player.round_number, "normal")
             trial_index=player.round_number - C.NUM_PROUNDS-1
-            lValues = trial_data.iloc[trial_index].tolist() # lValues= p.database[int(player.round_number-4)]
-            #print(lValues)
+            lValues = p.trial_data.iloc[trial_index].tolist() # lValues= p.database[int(player.round_number-4)]
+            
         P1,P2,S1,S2,Q1,Q2 = lValues
         player.P1,player.P2, player.S1,player.S2,player.Q1,player.Q2 = P1,P2,int(S1),int(S2),int(Q1),int(Q2)
 
-        
-        #,player.S1,player.S2,player.P2,player.P2
 
-def attributeList(lValues,lPos,treatment): # treatment
+def attributeList(lValues,lPos,treatment): 
     lAttributes = []
     lOrder = []
 
     for i in range(len(C.lAttrID)):
         id                  = C.lAttrID[i]      
         name                = C.lAttrNames[i]  
+        
         # Store the order of the list
         lOrder.append(lPos.index(id))
         lPaths = []
@@ -194,22 +182,24 @@ class Message(Page):
 
 class Decision(Page):
     form_model      = 'player'
-    #form_fields     = [ 'sChoice']
+    # form_fields     = [ 'sChoice']
     form_fields     = [ 'sStartDec','sEndDec', 'dRT_dec', 'sNames', 'sDT' , 'sChoice'] #'dTime2first',
     
     @staticmethod
     def vars_for_template(player: Player):
+        
         # Order of attributes (from participant var)
         p = player.participant
         lPos = p.lPos
-        treatment=p.sTreatment   
+        treatment=p.sTreatment
+  
 
         # Candidates values          
       
         lValues = [[player.P1,player.P2],[player.S1,player.S2],[player.Q1,player.Q2]]
         print(lValues)
         return dict(
-            lAttr = attributeList(lValues,lPos,treatment), #treatment
+            lAttr = attributeList(lValues,lPos,treatment), 
         )
     
     @staticmethod
