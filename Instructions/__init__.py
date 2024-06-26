@@ -21,6 +21,7 @@ class C(BaseConstants):
     # Template variables
     AvgDur              = '30'
     iBonus              = '1.5'
+    #iPercentage         = '50'
 
     ## Symbols directory
     # Base
