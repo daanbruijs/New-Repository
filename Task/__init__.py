@@ -87,8 +87,10 @@ def creating_session(subsession):
     s = subsession.session 
 
     # Read CSV file
-    csv_path = "_static/global/table/filtered_trials_modified.csv" #filtered_trials_shuffled
-    trial_data = pd.read_csv(csv_path)
+    csv_path_pos = "_static/global/table/positive_filtered_trials.csv" #filtered_trials_shuffled
+    csv_path_neg = "_static/global/table/negative_filtered_trials.csv"
+    trial_data_pos = pd.read_csv(csv_path_pos)
+    trial_data_neg = pd.read_csv(csv_path_neg)
 
     if subsession.round_number==1: 
         for player in subsession.get_players():
@@ -103,8 +105,11 @@ def creating_session(subsession):
             p.iSelectedTrial = random.randint(C.NUM_PROUNDS+1,C.NUM_ROUNDS)
             
             # Shuffle order of trials for each participant
-            shuffled_data = trial_data.sample(frac=1).reset_index(drop=True) # or I can upload the file without the top row? "P1,P2,S1,S2,Q1,Q2"
-            p.trial_data = shuffled_data
+            if p.sTreatment == "Positive":
+                p.trial_data=trial_data_pos.sample(frac=1).reset_index(drop=True)
+            else:
+                p.trial_data = trial_data_neg.sample(frac=1).reset_index(drop=True)
+
 
     for player in subsession.get_players():
         p = player.participant
