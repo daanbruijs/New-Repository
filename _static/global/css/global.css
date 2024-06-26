@@ -109,8 +109,8 @@
 }
 
 .img-instructions {
-    width: auto;
-    height: 40vw;
+    width: 30vw;
+    height: auto;
 }
 
 .gif-instructions {
@@ -203,6 +203,11 @@
     font-size: 0.8em;
     text-align: center;
     font-weight: bold;
+}
+
+.slide2-ecolabels {
+    font-size: 0.8em;
+    font-style: italic;
 }
 
 /* ECO TASK APP */
