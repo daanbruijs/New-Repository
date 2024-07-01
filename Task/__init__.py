@@ -81,6 +81,9 @@ class Player(BasePlayer):
     # Others 
     sBetweenBtn = models.StringField()
 
+    # Missing attribute
+    # iChooseB=models.IntegerField()
+
     
 def creating_session(subsession):
     # Load Session variables
@@ -188,7 +191,7 @@ class Message(Page):
 class Decision(Page):
     form_model      = 'player'
     # form_fields     = [ 'sChoice']
-    form_fields     = [ 'sStartDec','sEndDec', 'dRT_dec', 'sNames', 'sDT' , 'sChoice'] #'dTime2first',
+    form_fields     = [ 'sStartDec','sEndDec', 'dRT_dec', 'sNames', 'sDT' , 'sChoice'] #'dTime2first'
     
     @staticmethod
     def vars_for_template(player: Player):
@@ -211,6 +214,7 @@ class Decision(Page):
     def before_next_page(player: Player, timeout_happened):
         p = player.participant
         
+        # player.iChooseB = 1 if player.sChoice == 'Product 2' else 0  # Example logic
         if player.round_number == p.iSelectedTrial: 
             p.bChoseA = player.iChooseB == 0   
             print(f"Decision in selected trial recorded: {p.bChoseA}")

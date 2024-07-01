@@ -42,7 +42,7 @@ PARTICIPANT_FIELDS = [
     'sTreatment',           # Treatment name
     'sTreesLocation',       # Location of trees
     'trial_data',           # Shuffles trial data
-    'bChose A',             # Decision in selected trial 
+    'bChoseA',             # Choice made by the participant A/B
 ]
 SESSION_FIELDS = []
 
@@ -53,6 +53,7 @@ LANGUAGE_CODE = 'en'
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
+
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
