@@ -34,14 +34,6 @@
         "labels": ["Yes","No","Not sure / don't remember"]
     },
     {
-        "question": "Where would you put yourself in the socioeconomic ladder?",
-        "name": "SNE",
-        "type": "Likert",
-        "likertMax": 10,
-        "limits": ["worst off","best off"],
-        "confirmRequired" : true
-    },    
-    {
         "question": "Where would you place yourself in the political scale from extremely liberal to extremely conservative?",
         "name": "political",
         "type": "Likert",
@@ -66,17 +58,37 @@
         "confirmRequired" : true
     },   
     {
+        "question": "Please enter 2",
+        "name": "attention_check",
+        "type": "Likert",
+        "likertMax": 10,
+        "limits": ["Not concerned at all","Extremely concerned"]
+    }
+    {
         "question": "How do you see yourself: are you generally a person who is prepared to behave sustainably, even when this is inconvenient or costly to you?",
         "name": "sustainable_behavior",
         "type": "Likert",
         "likertMax": 10,
         "limits": ["Not prepared at all","Extremely prepared"],
         "confirmRequired" : true
-    },   
+    }, 
+    {
+        "question": "Have you ever changed your purchasing behavior based on positive ecolabels?",
+        "name": "changed_behavior",
+        "type": "radio",
+        "values": [1, 2],
+        "labels": ["Yes", "No"]
+    },
     {
         "question": "What do you think is the purpose of this study? Describe shortly in your own words.",
         "name": "purpose",
         "type": "longOpen",
         "blank": "True"   
+    },
+    {
+        "question": "If you want to be eligible for the bonus payment, please enter your email below",
+        "name": "email",
+        "type": "shortOpen",
+        "optional": true
     }
 ]}

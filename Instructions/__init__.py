@@ -20,8 +20,7 @@ class C(BaseConstants):
     iNumTrials          = iPracticeRounds + iOptions
     # Template variables
     AvgDur              = '30'
-    iBonus              = '1.5'
-    #iPercentage         = '50'
+    iBonus              = '2.5'
 
     ## Symbols directory
     # Base
