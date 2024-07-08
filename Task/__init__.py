@@ -210,14 +210,14 @@ class Decision(Page):
             lAttr = attributeList(lValues,lPos,treatment), 
         )
     
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        p = player.participant
+    # @staticmethod
+    # def before_next_page(player: Player, timeout_happened):
+    #     p = player.participant
         
-        # player.iChooseB = 1 if player.sChoice == 'Product 2' else 0  # Example logic
-        if player.round_number == p.iSelectedTrial: 
-            p.bChoseA = player.iChooseB == 0   
-            print(f"Decision in selected trial recorded: {p.bChoseA}")
+    #     #player.iChooseB = 1 if player.sChoice == 'Product 2' else 0  # Example logic
+    #     if player.round_number == p.iSelectedTrial: 
+    #         p.bChoseA = player.iChooseB == 0   
+    #         print(f"Decision in selected trial recorded: {p.bChoseA}")
 
 
 class FixCross(Page):
