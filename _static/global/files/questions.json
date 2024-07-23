@@ -87,7 +87,7 @@
         "blank": "True"   
     },
     {
-        "question": "If you want to be eligible for the bonus payment, please enter your email below",
+        "question": "If you want to be eligible for the bonus payment, please enter your email below. Otherwise: write 'x'",
         "name": "email",
         "type": "shortOpen",
         "optional": true
